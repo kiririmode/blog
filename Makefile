@@ -7,8 +7,8 @@ pull:
 
 .PHONY: new-entry
 new-entry:
-	mkdir -p "${BLOG}/$(shell date +%Y%m%d)"
-	touch "${BLOG}/$(shell date +%Y%m%d)/$(shell date +%s).md"
+	mkdir -p "${BLOG}/entry/$(shell date +%Y%m%d)"
+	touch "${BLOG}/entry/$(shell date +%Y%m%d)/$(shell date +%s).md"
 
 .PHONY: check
 check:
