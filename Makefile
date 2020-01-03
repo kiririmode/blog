@@ -7,8 +7,7 @@ pull:
 
 .PHONY: new-entry
 new-entry:
-	mkdir -p "${BLOG}/entry/$(shell date +%Y%m%d)"
-	touch "${BLOG}/entry/$(shell date +%Y%m%d)/$(shell date +%s).md"
+	echo | blogsync post --draft ${BLOG}
 
 .PHONY: check
 check:
