@@ -2,7 +2,7 @@ name: kiririmode.hatenablog.jp post entry workflow
 on:
   push:
     paths:
-      - 'kiririmode.hatenablog.jp/entry/**.md'
+      - "kiririmode.hatenablog.jp/entry/**.md"
 jobs:
   post:
     name: post entries
@@ -16,7 +16,7 @@ jobs:
         run: npm install
       - name: Setup blogsync
         env:
-          BLOGSYNC_VER: v0.10.2
+          BLOGSYNC_VER: v0.10.3
         run: |
           mkdir bin
           curl --location --output blogsync.tar.gz --remote-name https://github.com/motemen/blogsync/releases/download/${BLOGSYNC_VER}/blogsync_${BLOGSYNC_VER}_linux_amd64.tar.gz
