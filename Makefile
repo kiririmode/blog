@@ -18,10 +18,6 @@ check:
 post: check
 	blogsync push ${BLOG}/entry/${DATE}/*.md
 
-.PHONY: pull
-pull:
-	blogsync pull ${BLOG}
-
 .PHONY: clean
 clean:
 	find ${BLOG} -size 0 -name '*.md' -print0 | xargs -0 rm
