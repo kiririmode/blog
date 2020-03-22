@@ -3,3 +3,5 @@ rules:
   - expected: VS Code
     patterns: VSCode
     prh: 公式サイトによるとVS Codeらしい
+  - expected: 認定スクラムマスター
+    patterns: 認定スクラムマスタ

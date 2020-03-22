@@ -1,6 +1,11 @@
 {
   "filters": {
-    "comments": true
+    "comments": true,
+    "whitelist": {
+      "allow": [
+        "/認定スクラムマスター/"
+      ]
+    }
   },
   "rules": {
     "preset-ja-technical-writing": true,
