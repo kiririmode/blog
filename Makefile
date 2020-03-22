@@ -16,6 +16,7 @@ check:
 
 .PHONY: post
 post: check
+
 	blogsync push ${BLOG}/entry/${DATE}/*.md
 
 .PHONY: clean
