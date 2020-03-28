@@ -7,7 +7,7 @@ pull:
 
 .PHONY: new-entry
 new-entry:
-	echo | blogsync post --draft ${BLOG}
+	echo | blogsync post --draft ${BLOG} | tail -1 | awk '{ print $1 }' | pbcopy
 
 .PHONY: check
 check:
