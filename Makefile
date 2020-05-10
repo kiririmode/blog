@@ -11,7 +11,6 @@ new-entry:
 
 .PHONY: check
 check:
-	npx textlint --fix ${BLOG}/entry/${DATE}/*.md
 	npx textlint ${BLOG}/entry/${DATE}/*.md
 
 .PHONY: post
