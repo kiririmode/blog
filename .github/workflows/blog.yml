@@ -10,6 +10,8 @@ jobs:
     steps:
       - name: Checkout the commit
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
       - name: Setup Node.js environment
         uses: actions/setup-node@v1
       - name: Install dependencies

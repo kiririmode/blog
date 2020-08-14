@@ -1,5 +1,5 @@
 BLOG = kiririmode.hatenablog.jp
-DATE = $(shell date +%Y%m%d)
+TARGETS = $(shell git log -1 --name-only --pretty=oneline --full-index -- kiririmode.hatenablog.jp/entry/ | grep -vE '^[0-9a-f]{40}' | sort -u | grep '.md$$')
 
 .PHONY: pull
 pull:
@@ -11,11 +11,11 @@ new-entry:
 
 .PHONY: check
 check:
-	npx textlint ${BLOG}/entry/${DATE}/*.md
+	npx textlint ${TARGETS}
 
 .PHONY: post
 post: check
-	blogsync push ${BLOG}/entry/${DATE}/*.md
+	echo ${TARGETS} | xargs -n1 blogsync push
 
 .PHONY: clean
 clean:
