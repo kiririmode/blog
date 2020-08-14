@@ -22,7 +22,11 @@ jobs:
           BLOGSYNC_VER: v0.11.0
         run: |
           mkdir bin
-          curl --location --output blogsync.tar.gz --remote-name https://github.com/x-motemen/blogsync/releases/download/${BLOGSYNC_VER}/blogsync_${BLOGSYNC_VER}_linux_amd64.tar.gz
+          curl \
+            --location \
+            --output blogsync.tar.gz \
+            --remote-name \
+            https://github.com/x-motemen/blogsync/releases/download/${BLOGSYNC_VER}/blogsync_${BLOGSYNC_VER}_linux_amd64.tar.gz
           tar zxf blogsync.tar.gz -C bin --strip-component 1 blogsync_${BLOGSYNC_VER}_linux_amd64/blogsync
       - name: append blogsync path to PATH
         run: echo "::add-path::./bin"
