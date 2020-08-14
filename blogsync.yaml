@@ -1,6 +1,4 @@
 
 kiririmode.hatenablog.jp:
-  username: kiririmode
-  password: %PASSWORD%
 default:
   local_root: ./

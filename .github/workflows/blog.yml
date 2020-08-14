@@ -16,12 +16,9 @@ jobs:
         uses: actions/setup-node@v1
       - name: Install dependencies
         run: npm install
-      - name: Create blogsync config
-        run: |
-          sed s/%PASSWORD%/${{ secrets.PASSWORD }}/g blogsync.yaml.tmpl > blogsync.yaml
       - name: Setup blogsync
         env:
-          BLOGSYNC_VER: v0.11.0
+          BLOGSYNC_VER: v0.12.0
         run: |
           mkdir bin
           curl \
@@ -35,4 +32,6 @@ jobs:
       - name: post entries
         env:
           TZ: "Asia/Tokyo"
+          BLOGSYNC_USERNAME: ${{ secrets.USERNAME }}
+          BLOGSYNC_PASSWORD: ${{ secrets.PASSWORD }}
         run: make post
