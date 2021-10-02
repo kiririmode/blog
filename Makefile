@@ -1,5 +1,4 @@
 BLOG = kiririmode.hatenablog.jp
-TARGETS = $(shell git log -1 --name-only --pretty=oneline --full-index -- kiririmode.hatenablog.jp/entry/ | grep -vE '^[0-9a-f]{40}' | sort -u | grep '.md$$')
 
 .PHONY: pull
 pull:
@@ -11,11 +10,11 @@ new-entry:
 
 .PHONY: check
 check:
-	npx textlint ${TARGETS}
+	scripts/check.sh
 
 .PHONY: post
 post: check
-	echo ${TARGETS} | xargs -n1 blogsync push
+	scripts/publish.sh
 
 .PHONY: clean
 clean:
