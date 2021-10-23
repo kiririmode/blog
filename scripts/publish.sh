@@ -8,6 +8,11 @@ function publish {
 
     blogsync push $entries &&
         date -u +%s >$TIMESTAMP_FILE
+
+    if [[ -n ${GITHUB_ACTIONS-} ]]; then
+        git config --global user.email "kiririmode@gmail.com"
+        git config --global user.name $GITHUB_ACTOR
+    fi
     git add $TIMESTAMP_FILE &&
         git commit --message "update: last_publish_time" &&
         git push origin master
