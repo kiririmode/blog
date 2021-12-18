@@ -111,3 +111,4 @@ temp/
 .terraform
 .vscode
 !terraform/.terraform.lock.hcl
+.DS_Store
