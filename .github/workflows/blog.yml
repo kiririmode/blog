@@ -50,4 +50,4 @@ jobs:
           TZ: "Asia/Tokyo"
           BLOGSYNC_USERNAME: ${{ secrets.USERNAME }}
           BLOGSYNC_PASSWORD: ${{ secrets.PASSWORD }}
-        run: ${{ github.workspace }}/utils/textlint.sh
+        run: ${{ github.workspace }}/utils/post_blog.sh
