@@ -17,7 +17,11 @@
   },
   "rules": {
     "preset-ja-technical-writing": {
-      "no-exclamation-question-mark": false
+      "no-exclamation-question-mark": false,
+      "max-kanji-continuous-len": {
+        "max": 7,
+        "allow": ["事前課題解決力"]
+      }
     },
     "spellcheck-tech-word": true,
     "textlint-rule-preset-ja-spacing": true,
