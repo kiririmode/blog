@@ -9,14 +9,13 @@ for i in $(seq "$LINT_TARGET_DAYS" -1 0); do
     dateDir=$(date +%Y%m%d --date "$i days ago")
 
     # Markdownファイルが存在しなければ、次のディレクトリに処理を移す
-    mdfiles=(kiririmode.hatenablog.jp/entry/"${dateDir}"/*.md)
-    ((${#mdfiles[*]})) || continue
+    for f in kiririmode.hatenablog.jp/entry/"${dateDir}"/*.md; do
+        npx textlint --format checkstyle "$f" |
+            reviewdog \
+                -f=checkstyle \
+                -name="textlint" \
+                -reporter=github-pr-review \
+                -fail-on-error=true
+    done
 
-    echo "target: ${mdfiles[*]}"
-    npx textlint --format checkstyle "${mdfiles[*]}" |
-        reviewdog \
-            -f=checkstyle \
-            -name="textlint" \
-            -reporter=github-pr-review \
-            -fail-on-error=true
 done
