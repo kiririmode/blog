@@ -9,8 +9,10 @@ for i in $(seq "$POST_TARGET_DAYS" -1 0); do
 
     # Markdownファイルが存在しなければ、次のディレクトリに処理を移す
     mdfiles=(kiririmode.hatenablog.jp/entry/"${dateDir}"/*.md)
-    ((${#mdfiles[*]})) || continue
+    if [[ -z ${#mdfiles} ]]; then
+        continue
+    fi
 
     echo "target: ${mdfiles[*]}"
-    bin/blogsync push ${mdfiles[*]}
+    bin/blogsync push "${mdfiles[*]}"
 done
