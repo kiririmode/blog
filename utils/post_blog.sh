@@ -14,5 +14,5 @@ for i in $(seq "$POST_TARGET_DAYS" -1 0); do
     fi
 
     echo "target: ${mdfiles[*]}"
-    bin/blogsync push ${mdfiles[*]}
+    bin/blogsync push "${mdfiles[*]}"
 done
