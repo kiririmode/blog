@@ -113,3 +113,6 @@ temp/
 !terraform/.terraform.lock.hcl
 .DS_Store
 .idea
+
+# Draw.ioのキャッシュ
+.$*
