@@ -24,7 +24,8 @@
         "クッキー",
         "git",
         "どこもかしこも",
-        "非負値可測関数列"
+        "非負値可測関数列",
+        "！"
       ]
     }
   },
@@ -34,6 +35,10 @@
       "max-kanji-continuous-len": {
         "max": 7,
         "allow": ["事前課題解決力"]
+      },
+      "ja-no-successive-word": {
+        "allowOnomatopee": true,
+        "allow": ["！"]
       }
     },
     "spellcheck-tech-word": true,
