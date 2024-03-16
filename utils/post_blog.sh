@@ -1,6 +1,7 @@
 #!/bin/bash
 set -eu
 
+shopt -s nullglob
 # 投稿対象を現在日から何日前にするか
 readonly POST_TARGET_DAYS=5
 
