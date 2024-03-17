@@ -1,0 +1,39 @@
+{
+    "name": "はてなブログエディタ",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "forwardPorts": [
+        3000
+    ],
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "GitHub.copilot-chat",
+                "GitHub.copilot",
+                "MS-CEINTL.vscode-language-pack-ja",
+                "dbaeumer.vscode-eslint",
+                "ms-azuretools.vscode-docker",
+                "hediet.vscode-drawio",
+                "msyrus.go-doc",
+                "oderwat.indent-rainbow",
+                "mathematic.vscode-latex",
+                "yzhang.markdown-all-in-one",
+                "TakumiI.markdowntable",
+                "DavidAnson.vscode-markdownlint",
+                "ionutvmi.path-autocomplete",
+                "vscode-icons-team.vscode-icons",
+                "redhat.vscode-yaml",
+                "exiasr.hadolint"
+            ]
+        }
+    },
+    "postCreateCommand": "npm install",
+    "mounts": [
+        {
+            "source": "${localEnv:HOME}/.config/blogsync",
+            "target": "/home/node/.config/blogsync",
+            "type": "bind"
+        }
+   ]
+}
