@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/devcontainers/javascript-node:20-bookworm
+FROM mcr.microsoft.com/devcontainers/javascript-node:22-bookworm
 
 ENV BLOGSYNC_VERSION v0.20.1
 ENV HADOLINT_VERSION v2.12.0
