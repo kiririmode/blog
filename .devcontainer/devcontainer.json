@@ -27,7 +27,7 @@
         "ghcr.io/jsburckhardt/devcontainer-features/uv:1": {},
         "ghcr.io/anthropics/devcontainer-features/claude-code:1.0": {}
     },
-    "postCreateCommand": "npm install",
+    "postCreateCommand": "npm install && uv tool install pre-commit && pre-commit install",
     "mounts": [
         {
             "source": "${localEnv:HOME}/.config/blogsync",
