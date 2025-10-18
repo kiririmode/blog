@@ -150,37 +150,12 @@ ISBN:xxxxxxxxxxxxx:detail
 
 - **トリガー**: `master` ブランチへのpushで `kiririmode.hatenablog.jp/entry/**.md` の変更があった場合
 - **処理**:
-  1. 100コミット深度でコードをチェックアウト
-  2. Node.js 22をセットアップ
-  3. blogsync v0.12.0をインストール
-  4. `utils/post_blog.sh` を実行し、過去5日間のエントリを公開
+  1. 変更されたMarkdownファイルを検出
+  2. Node.js 22をセットアップし、依存関係をインストール
+  3. 変更されたファイルに対してtextlintを実行
+  4. blogsync v0.12.0をインストール
+  5. textlintが成功した場合のみ、変更されたエントリを公開
 - **認証**: はてなブログの `USERNAME` と `PASSWORD` シークレットを使用
-
-### Textlintワークフロー (`.github/workflows/textlint.yml`)
-
-- **トリガー**: プルリクエスト
-- **処理**:
-  1. 過去5日間のファイルにtextlintを実行
-  2. reviewdogを使用してレビューコメントを投稿
-  3. textlintエラーで失敗
-
-## ユーティリティスクリプト
-
-### `utils/post_blog.sh`
-
-過去5日間のブログエントリを公開（`POST_TARGET_DAYS` で設定可能）。日付ディレクトリを反復処理し、blogsyncでmarkdownファイルをpushします。
-
-### `utils/textlint.sh`
-
-過去5日間のエントリにtextlintを実行（`LINT_TARGET_DAYS` で設定可能）し、reviewdog経由でPRレビュー用に結果を報告します。
-
-### `scripts/check.sh`
-
-最終公開時刻（`last_publish_time` ファイルで追跡）以降の変更されたエントリにtextlintを実行します。
-
-### `scripts/publish.sh`
-
-最終公開以降に変更されたエントリを公開し、`last_publish_time` を更新、タイムスタンプの更新をコミットします。
 
 ## blogsync連携
 
