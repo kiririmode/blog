@@ -21,7 +21,7 @@ jobs:
       # 変更されたMarkdownファイルを検出
       - name: Get changed markdown files
         id: changed-files
-        uses: tj-actions/changed-files@v45
+        uses: tj-actions/changed-files@v47
         with:
           files: |
             kiririmode.hatenablog.jp/entry/**/*.md
@@ -69,7 +69,7 @@ jobs:
       # 変更されたMarkdownファイルを検出
       - name: Get changed markdown files
         id: changed-files
-        uses: tj-actions/changed-files@v45
+        uses: tj-actions/changed-files@v47
         with:
           files: |
             kiririmode.hatenablog.jp/entry/**/*.md
@@ -130,7 +130,7 @@ jobs:
       # 変更されたMarkdownファイルを検出
       - name: Get changed markdown files
         id: changed-files
-        uses: tj-actions/changed-files@v45
+        uses: tj-actions/changed-files@v47
         with:
           files: |
             kiririmode.hatenablog.jp/entry/**/*.md
