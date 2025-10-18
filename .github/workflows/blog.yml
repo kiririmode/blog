@@ -11,26 +11,54 @@ jobs:
     name: Post entries
     runs-on: ubuntu-latest
     steps:
+      # コミットをチェックアウト
       - name: Checkout the commit
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
           fetch-depth: 100
 
+      # 変更されたMarkdownファイルを検出
+      - name: Get changed markdown files
+        id: changed-files
+        uses: tj-actions/changed-files@v45
+        with:
+          files: |
+            kiririmode.hatenablog.jp/entry/**/*.md
+
+      # Node.js環境をセットアップ（変更があった場合のみ）
       - name: Setup Node.js environment
+        if: steps.changed-files.outputs.any_changed == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: "22"
 
+      # 依存関係のキャッシュ（変更があった場合のみ）
       - name: Cache dependencies
+        if: steps.changed-files.outputs.any_changed == 'true'
         uses: actions/cache@v4
         with:
           path: node_modules
           key: node-${{ hashFiles('package-lock.json') }}
 
+      # 依存関係をインストール（変更があった場合のみ）
       - name: Install dependencies
+        if: steps.changed-files.outputs.any_changed == 'true'
         run: npm install
 
+      # 変更されたファイルに対してtextlintを実行（変更があった場合のみ）
+      # エラーがあればここでワークフローが失敗し、後続のステップは実行されない
+      - name: Run textlint on changed files
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          echo "Running textlint on changed files..."
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            echo "Linting: $file"
+            npx textlint "$file"
+          done
+
+      # blogsyncをセットアップ（変更があった場合のみ）
       - name: Setup blogsync
+        if: steps.changed-files.outputs.any_changed == 'true'
         env:
           BLOGSYNC_VER: v0.12.0
         run: |
@@ -42,12 +70,21 @@ jobs:
             https://github.com/x-motemen/blogsync/releases/download/${BLOGSYNC_VER}/blogsync_${BLOGSYNC_VER}_linux_amd64.tar.gz
           tar zxf blogsync.tar.gz -C bin --strip-component 1 blogsync_${BLOGSYNC_VER}_linux_amd64/blogsync
 
+      # blogsyncのパスをPATHに追加（変更があった場合のみ）
       - name: append blogsync path to PATH
+        if: steps.changed-files.outputs.any_changed == 'true'
         run: echo "./bin" >> $GITHUB_PATH
 
-      - name: post entries
+      # textlintが成功した場合のみ、変更されたエントリを公開
+      - name: Post changed entries
+        if: steps.changed-files.outputs.any_changed == 'true'
         env:
           TZ: "Asia/Tokyo"
           BLOGSYNC_USERNAME: ${{ secrets.USERNAME }}
           BLOGSYNC_PASSWORD: ${{ secrets.PASSWORD }}
-        run: ${{ github.workspace }}/utils/post_blog.sh
+        run: |
+          echo "Publishing changed entries..."
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            echo "Publishing: $file"
+            bin/blogsync push "$file"
+          done
