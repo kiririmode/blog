@@ -12,6 +12,7 @@
   "author": "kiririmode",
   "license": "ISC",
   "devDependencies": {
+    "markdownlint-cli": "^0.45.0",
     "textlint": "15.0.0",
     "textlint-filter-rule-comments": "1.2.2",
     "textlint-filter-rule-whitelist": "2.0.0",

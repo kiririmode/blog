@@ -6,3 +6,13 @@ repos:
         language: system
         entry: npx textlint
         files: \.md$
+      - id: markdownlint
+        name: markdownlint
+        language: system
+        entry: npx markdownlint-cli
+        files: \.md$
+      - id: shellcheck
+        name: shellcheck
+        language: system
+        entry: shellcheck
+        files: \.sh$
