@@ -4,6 +4,7 @@
   "description": "kiririmode.hatenablog.jp",
   "main": "index.js",
   "scripts": {
+    "entry": "echo | blogsync post --draft kiririmode.hatenablog.jp | tail -1 | awk '{ print $1 }'",
     "lint": "textlint",
     "publish": "blogsync push"
   },
