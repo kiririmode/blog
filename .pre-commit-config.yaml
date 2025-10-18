@@ -1,0 +1,8 @@
+repos:
+  - repo: local
+    hooks:
+      - id: textlint
+        name: textlint
+        language: system
+        entry: npx textlint
+        files: \.md$
