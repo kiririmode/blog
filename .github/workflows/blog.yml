@@ -5,10 +5,11 @@ on:
       - master
     paths:
       - "kiririmode.hatenablog.jp/entry/**.md"
+      - "**/*.sh"
 
 jobs:
-  post:
-    name: Post entries
+  textlint:
+    name: Run textlint
     runs-on: ubuntu-latest
     steps:
       # コミットをチェックアウト
@@ -46,7 +47,6 @@ jobs:
         run: npm install
 
       # 変更されたファイルに対してtextlintを実行（変更があった場合のみ）
-      # エラーがあればここでワークフローが失敗し、後続のステップは実行されない
       - name: Run textlint on changed files
         if: steps.changed-files.outputs.any_changed == 'true'
         run: |
@@ -55,6 +55,85 @@ jobs:
             echo "Linting: $file"
             npx textlint "$file"
           done
+
+  markdownlint:
+    name: Run markdownlint
+    runs-on: ubuntu-latest
+    steps:
+      # コミットをチェックアウト
+      - name: Checkout the commit
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          fetch-depth: 100
+
+      # 変更されたMarkdownファイルを検出
+      - name: Get changed markdown files
+        id: changed-files
+        uses: tj-actions/changed-files@v45
+        with:
+          files: |
+            kiririmode.hatenablog.jp/entry/**/*.md
+
+      # Node.js環境をセットアップ（変更があった場合のみ）
+      - name: Setup Node.js environment
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      # 依存関係のキャッシュ（変更があった場合のみ）
+      - name: Cache dependencies
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: node-${{ hashFiles('package-lock.json') }}
+
+      # 依存関係をインストール（変更があった場合のみ）
+      - name: Install dependencies
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: npm install
+
+      # 変更されたファイルに対してmarkdownlintを実行（変更があった場合のみ）
+      - name: Run markdownlint on changed files
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          echo "Running markdownlint on changed files..."
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            echo "Linting: $file"
+            npx markdownlint-cli "$file"
+          done
+
+  shellcheck:
+    name: Run shellcheck
+    runs-on: ubuntu-latest
+    steps:
+      # コミットをチェックアウト
+      - name: Checkout the commit
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+
+      # shellcheckを実行
+      - name: Run shellcheck
+        uses: ludeeus/action-shellcheck@2.0.0
+
+  publish:
+    name: Publish to blog
+    runs-on: ubuntu-latest
+    needs: [textlint, markdownlint, shellcheck]
+    steps:
+      # コミットをチェックアウト
+      - name: Checkout the commit
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          fetch-depth: 100
+
+      # 変更されたMarkdownファイルを検出
+      - name: Get changed markdown files
+        id: changed-files
+        uses: tj-actions/changed-files@v45
+        with:
+          files: |
+            kiririmode.hatenablog.jp/entry/**/*.md
 
       # blogsyncをセットアップ（変更があった場合のみ）
       - name: Setup blogsync
@@ -75,7 +154,7 @@ jobs:
         if: steps.changed-files.outputs.any_changed == 'true'
         run: echo "./bin" >> $GITHUB_PATH
 
-      # textlintが成功した場合のみ、変更されたエントリを公開
+      # 変更されたエントリを公開
       - name: Post changed entries
         if: steps.changed-files.outputs.any_changed == 'true'
         env:
