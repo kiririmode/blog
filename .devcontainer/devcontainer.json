@@ -9,24 +9,23 @@
     "customizations": {
         "vscode": {
             "extensions": [
-                "GitHub.copilot-chat",
-                "GitHub.copilot",
-                "MS-CEINTL.vscode-language-pack-ja",
                 "dbaeumer.vscode-eslint",
                 "ms-azuretools.vscode-docker",
                 "hediet.vscode-drawio",
-                "msyrus.go-doc",
                 "oderwat.indent-rainbow",
                 "mathematic.vscode-latex",
                 "yzhang.markdown-all-in-one",
-                "TakumiI.markdowntable",
                 "DavidAnson.vscode-markdownlint",
                 "ionutvmi.path-autocomplete",
-                "vscode-icons-team.vscode-icons",
                 "redhat.vscode-yaml",
                 "exiasr.hadolint"
             ]
         }
+    },
+    "features": {
+        "ghcr.io/devcontainers/features/python:1": {},
+        "ghcr.io/jsburckhardt/devcontainer-features/uv:1": {},
+        "ghcr.io/anthropics/devcontainer-features/claude-code:1.0": {}
     },
     "postCreateCommand": "npm install",
     "mounts": [
@@ -35,5 +34,5 @@
             "target": "/home/node/.config/blogsync",
             "type": "bind"
         }
-   ]
+    ]
 }
