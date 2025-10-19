@@ -54,14 +54,22 @@ npx textlint path/to/file.md   # 特定のファイルをリント
 #### 下書きを公開準備する
 
 ```bash
-npm run prepare kiririmode.hatenablog.jp/entry/_draft/123456.md
+npm run prepare-publish kiririmode.hatenablog.jp/entry/_draft/123456.md
 ```
 
 このコマンドは以下を自動実行します。
 
 - Mermaid図をPNG画像に変換
+- PNG画像をはてなPhotolifeにアップロード
+- Markdown内のMermaid codeblock記述を画像URL(`![](https://...)`)に置換
+- PNG画像をローカルにも保存（バックアップ）
 - ファイルを `kiririmode.hatenablog.jp/entry/YYYYMMDD/` ディレクトリに移動
 - 元の下書きファイルを削除
+
+**必要な環境変数**:
+
+- `HATENA_USERNAME`: はてなID
+- `HATENA_API_KEY`: はてなのAtomPub APIキー（[https://blog.hatena.ne.jp/my/config](https://blog.hatena.ne.jp/my/config)から取得）
 
 #### 変更をコミット・プッシュ
 
@@ -79,7 +87,7 @@ GitHub Actionsが自動的に以下を実行します。
 - markdownlintによる構文チェック
 - blogsyncによるはてなブログへの公開
 
-**重要**: `_draft/` 配下のファイルを直接コミット・プッシュしても公開されません。必ず `npm run prepare` を実行してください。
+**重要**: `_draft/` 配下のファイルを直接コミット・プッシュしても公開されません。必ず `npm run prepare-publish` を実行してください。
 
 ## コンテンツガイドライン
 
@@ -184,7 +192,7 @@ ISBN:xxxxxxxxxxxxx:detail
   5. Lintが成功した場合のみ、変更されたエントリを公開
 - **認証**: はてなブログの `USERNAME` と `PASSWORD` シークレットを使用
 
-**注意**: `_draft/` 配下のファイルはCI/CDワークフローのトリガー対象外です。必ずローカルで `npm run prepare` を実行してから公開してください。
+**注意**: `_draft/` 配下のファイルはCI/CDワークフローのトリガー対象外です。必ずローカルで `npm run prepare-publish` を実行してから公開してください。
 
 ## blogsync連携
 
