@@ -117,6 +117,5 @@ temp/
 # Draw.ioのキャッシュ
 .$*
 
-kiririmode.hatenablog.jp/entry/_draft/
 venv/
 .env
