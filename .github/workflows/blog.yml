@@ -4,7 +4,7 @@ on:
     branches:
       - master
     paths:
-      - "kiririmode.hatenablog.jp/entry/**.md"
+      - "kiririmode.hatenablog.jp/entry/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/*.md"
       - "**/*.sh"
 
 jobs:
@@ -24,7 +24,7 @@ jobs:
         uses: tj-actions/changed-files@v47
         with:
           files: |
-            kiririmode.hatenablog.jp/entry/**/*.md
+            kiririmode.hatenablog.jp/entry/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/*.md
 
       # Node.js環境をセットアップ（変更があった場合のみ）
       - name: Setup Node.js environment
@@ -72,7 +72,7 @@ jobs:
         uses: tj-actions/changed-files@v47
         with:
           files: |
-            kiririmode.hatenablog.jp/entry/**/*.md
+            kiririmode.hatenablog.jp/entry/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/*.md
 
       # Node.js環境をセットアップ（変更があった場合のみ）
       - name: Setup Node.js environment
@@ -133,7 +133,7 @@ jobs:
         uses: tj-actions/changed-files@v47
         with:
           files: |
-            kiririmode.hatenablog.jp/entry/**/*.md
+            kiririmode.hatenablog.jp/entry/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/*.md
 
       # blogsyncをセットアップ（変更があった場合のみ）
       - name: Setup blogsync

@@ -8,7 +8,7 @@ kiririmode.hatenablog.jpの技術ブログ管理システムです。Markdown形
 
 ブログエントリは以下の場所に保存されます。
 
-```
+```text
 kiririmode.hatenablog.jp/entry/YYYYMMDD/{unix_timestamp}.md
 ```
 
@@ -47,12 +47,39 @@ blogsyncを使用して新しい下書きエントリを作成します。ファ
 npx textlint path/to/file.md   # 特定のファイルをリント
 ```
 
-### 公開
+### 公開準備と公開フロー
+
+ブログエントリを公開するには、以下のステップを実行します。
+
+#### 下書きを公開準備する
 
 ```bash
-blogsync push path/to/entry.md                  # 特定のエントリを公開
-blogsync push kiririmode.hatenablog.jp/_draft/123456.md  # 下書きを公開
+npm run prepare kiririmode.hatenablog.jp/entry/_draft/123456.md
 ```
+
+このコマンドは以下を自動実行します。
+
+- Mermaid図をPNG画像に変換
+- ファイルを `kiririmode.hatenablog.jp/entry/YYYYMMDD/` ディレクトリに移動
+- 元の下書きファイルを削除
+
+#### 変更をコミット・プッシュ
+
+```bash
+git add kiririmode.hatenablog.jp/entry/YYYYMMDD/
+git commit -m "記事を公開準備"
+git push origin master
+```
+
+#### 自動公開
+
+GitHub Actionsが自動的に以下を実行します。
+
+- textlintによる品質チェック
+- markdownlintによる構文チェック
+- blogsyncによるはてなブログへの公開
+
+**重要**: `_draft/` 配下のファイルを直接コミット・プッシュしても公開されません。必ず `npm run prepare` を実行してください。
 
 ## コンテンツガイドライン
 
@@ -148,14 +175,16 @@ ISBN:xxxxxxxxxxxxx:detail
 
 ### ブログ公開ワークフロー (`.github/workflows/blog.yml`)
 
-- **トリガー**: `master` ブランチへのpushで `kiririmode.hatenablog.jp/entry/**.md` の変更があった場合
+- **トリガー**: `master` ブランチへのpushで `kiririmode.hatenablog.jp/entry/YYYYMMDD/*.md` の変更があった場合
 - **処理**:
-  1. 変更されたMarkdownファイルを検出
+  1. 変更されたMarkdownファイルを検出（`YYYYMMDD/` 配下のみ）
   2. Node.js 22をセットアップし、依存関係をインストール
-  3. 変更されたファイルに対してtextlintを実行
+  3. 変更されたファイルに対してtextlintとmarkdownlintを実行
   4. blogsync v0.12.0をインストール
-  5. textlintが成功した場合のみ、変更されたエントリを公開
+  5. Lintが成功した場合のみ、変更されたエントリを公開
 - **認証**: はてなブログの `USERNAME` と `PASSWORD` シークレットを使用
+
+**注意**: `_draft/` 配下のファイルはCI/CDワークフローのトリガー対象外です。必ずローカルで `npm run prepare` を実行してから公開してください。
 
 ## blogsync連携
 
