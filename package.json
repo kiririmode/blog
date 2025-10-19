@@ -6,12 +6,14 @@
   "scripts": {
     "entry": "echo | blogsync post --draft kiririmode.hatenablog.jp | tail -1 | awk '{ print $1 }'",
     "lint": "textlint",
+    "prepare-publish": "node scripts/prepare-publish.js",
     "publish": "blogsync push"
   },
   "keywords": [],
   "author": "kiririmode",
   "license": "ISC",
   "devDependencies": {
+    "@mermaid-js/mermaid-cli": "^11.4.1",
     "@textlint-ja/textlint-rule-preset-ai-writing": "^1.6.1",
     "markdownlint-cli": "^0.45.0",
     "textlint": "15.2.3",
