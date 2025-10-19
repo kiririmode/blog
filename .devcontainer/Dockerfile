@@ -13,6 +13,8 @@ RUN apt-get update \
         chromium \
         ca-certificates \
         fonts-liberation \
+        fonts-noto-cjk \
+        fonts-noto-cjk-extra \
         libappindicator3-1 \
         libasound2 \
         libatk-bridge2.0-0 \
