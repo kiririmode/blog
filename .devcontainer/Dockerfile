@@ -8,8 +8,9 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN apt-get update \
     # Install shellcheck
     && apt-get install -y shellcheck \
-    # Install Chromium dependencies for Puppeteer
+    # Install Chromium and its dependencies for Puppeteer
     && apt-get install -y \
+        chromium \
         ca-certificates \
         fonts-liberation \
         libappindicator3-1 \
