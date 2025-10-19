@@ -12,6 +12,7 @@
   "author": "kiririmode",
   "license": "ISC",
   "devDependencies": {
+    "@textlint-ja/textlint-rule-preset-ai-writing": "^1.6.1",
     "markdownlint-cli": "^0.45.0",
     "textlint": "15.2.3",
     "textlint-filter-rule-comments": "1.2.2",
