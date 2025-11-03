@@ -27,7 +27,7 @@
         "ghcr.io/jsburckhardt/devcontainer-features/uv:1": {},
         "ghcr.io/devcontainers-extra/features/direnv:1": {}
     },
-    "postCreateCommand": "npm install && uv tool install pre-commit && pre-commit install && echo 'eval \"$(direnv hook bash)\"' >> ~/.bashrc",
+    "postCreateCommand": "npm install && uv tool install pre-commit && pre-commit install && echo 'eval \"$(direnv hook bash)\"' >> ~/.bashrc && curl -fsSL https://claude.ai/install.sh | bash",
     "mounts": [
         {
             "source": "${localEnv:HOME}/.config/blogsync",
