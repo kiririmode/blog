@@ -29,7 +29,8 @@
         "ghcr.io/devcontainers-extra/features/direnv:1": {},
         "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
     },
-    "postCreateCommand": "npm install && uv tool install pre-commit && pre-commit install && echo 'eval \"$(direnv hook bash)\"' >> ~/.bashrc && curl -fsSL https://claude.ai/install.sh | bash",
+    "postCreateCommand": "npm install && uv tool install pre-commit && pre-commit install && echo 'eval \"$(direnv hook bash)\"' >> ~/.bashrc",
+    "postStartCommand": ".devcontainer/scripts/setup-claude-plugins.sh",
     "mounts": [
         {
             "source": "${localEnv:HOME}/.config/blogsync",
