@@ -48,7 +48,8 @@
         "preferInHeader": "である",
         "preferInBody": "ですます",
         "preferInBoxiku": "である"
-      }
+      },
+      "ja-no-weak-phrase": false
     },
     "spellcheck-tech-word": true,
     "textlint-rule-preset-ja-spacing": true,
