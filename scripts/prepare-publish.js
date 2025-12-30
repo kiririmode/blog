@@ -173,8 +173,20 @@ async function preparePublish(draftFilePath) {
         { stdio: 'inherit' }
       );
     } catch (error) {
+      // エラーメッセージからPuppeteer設定エラーなど致命的なエラーを検出
+      const errorMessage = error.message || '';
+      const isFatalError =
+        errorMessage.includes('executablePath') ||
+        errorMessage.includes('Browser was not found') ||
+        errorMessage.includes('Failed to launch');
+
+      if (isFatalError) {
+        // 致命的なエラーの場合は処理を中断
+        throw new Error(`Fatal error during Mermaid conversion: ${errorMessage}`);
+      }
+
+      // Mermaid図がない場合など軽微なエラーは無視
       console.warn('Warning: mermaid-cli execution failed or no Mermaid diagrams found');
-      // Mermaid図がない場合もエラーとしない
     }
 
     // 生成されたPNG画像を確認
