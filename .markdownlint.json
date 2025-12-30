@@ -3,5 +3,6 @@
   "line-length": false,
   "no-inline-html": false,
   "no-bare-urls": false,
-  "first-line-heading": false
+  "first-line-heading": false,
+  "single-title": false
 }
