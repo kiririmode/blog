@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "obsidian-vault": {
+      "command": "npx",
+      "args": [
+        "mcp-remote",
+        "https://host.docker.internal:3443/mcp",
+        "--header",
+        "Authorization: Bearer ${OBSIDIAN_API_KEY}"
+      ]
+    }
+  }
+}
