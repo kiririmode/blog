@@ -154,6 +154,16 @@ jobs:
         if: steps.changed-files.outputs.any_changed == 'true'
         run: echo "./bin" >> $GITHUB_PATH
 
+      # blogsync設定ファイルを作成（変更があった場合のみ）
+      - name: Create blogsync config
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          cat > blogsync.yaml << 'EOF'
+          kiririmode.hatenablog.jp:
+            default:
+              local_root: ./
+          EOF
+
       # 変更されたエントリを公開
       - name: Post changed entries
         if: steps.changed-files.outputs.any_changed == 'true'

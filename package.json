@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "entry": "echo | blogsync post --draft kiririmode.hatenablog.jp | tail -1 | awk '{ print $1 }'",
-    "lint": "textlint",
+    "lint": "sh -c 'textlint \"$@\" && markdownlint \"$@\"' --",
     "prepare-publish": "node scripts/prepare-publish.js",
     "publish": "blogsync push"
   },
