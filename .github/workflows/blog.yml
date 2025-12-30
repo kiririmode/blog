@@ -139,7 +139,7 @@ jobs:
       - name: Setup blogsync
         if: steps.changed-files.outputs.any_changed == 'true'
         env:
-          BLOGSYNC_VER: v0.12.0
+          BLOGSYNC_VER: v0.20.1
         run: |
           mkdir bin
           curl \
