@@ -2,7 +2,7 @@ name: kiririmode.hatenablog.jp post entry workflow
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - "kiririmode.hatenablog.jp/entry/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/*.md"
       - "**/*.sh"
