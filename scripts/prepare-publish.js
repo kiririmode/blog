@@ -3,7 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
-const Fotolife = require('hatena-fotolife-api');
+const { Fotolife } = require('hatena-fotolife-api');
 
 /**
  * YAMLフロントマターからDateフィールドを抽出してYYYYMMDD形式に変換
