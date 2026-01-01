@@ -42,7 +42,7 @@
       },
       "ja-no-successive-word": {
         "allowOnomatopee": true,
-        "allow": ["！"]
+        "allow": ["！", "ある"]
       },
       "no-mix-dearu-desumasu": {
         "preferInHeader": "である",
