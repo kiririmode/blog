@@ -29,12 +29,17 @@
         "ghcr.io/devcontainers-extra/features/direnv:1": {},
         "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
     },
-    "postCreateCommand": "npm install && uv tool install pre-commit && pre-commit install && echo 'eval \"$(direnv hook bash)\"' >> ~/.bashrc",
+    "postCreateCommand": "npm install && uv tool install pre-commit && pre-commit install && echo 'eval \"$(direnv hook bash)\"' >> ~/.bashrc && .devcontainer/scripts/fix-claude-permissions.sh",
     "postStartCommand": ".devcontainer/scripts/setup-claude-plugins.sh",
     "mounts": [
         {
             "source": "${localEnv:HOME}/.config/blogsync",
             "target": "/home/node/.config/blogsync",
+            "type": "bind"
+        },
+        {
+            "source": "${localEnv:HOME}/.claude",
+            "target": "/home/node/.claude",
             "type": "bind"
         }
     ]
