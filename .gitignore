@@ -119,3 +119,9 @@ temp/
 
 venv/
 .env
+
+# 計画ファイル（ローカル作業用）
+plans/
+
+# 下書きエントリ（ローカル作業用）
+kiririmode.hatenablog.jp/entry/_draft/
