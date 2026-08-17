@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>議事録の転置</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #ffffff;
+    --paper-2: #e6fcff;
+    --ink: #333333;
+    --muted: #767676;
+    --soft: #999999;
+    --rule: rgba(51,51,51,0.12);
+    --accent: #008da6;
+    --accent-tint: rgba(0,141,166,0.08);
+    --accent-border: rgba(0,141,166,0.35);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--paper);
+  }
+  body {
+    display: flex;
+    justify-content: center;
+    padding: 24px 16px;
+    font-family: "Helvetica Neue", "Helvetica", "Arial", "BIZ UDPGothic", "Meiryo", "MS PGothic", "Hiragino Kaku Gothic Pro", sans-serif;
+  }
+  .diagram-wrap {
+    width: 100%;
+    max-width: 1280px;
+    overflow-x: auto;
+  }
+  svg { display: block; width: 100%; height: auto; }
+</style>
+</head>
+<body>
+<div class="diagram-wrap">
+<svg viewBox="0 0 1280 720" role="img" aria-labelledby="transpose-title transpose-desc" xmlns="http://www.w3.org/2000/svg">
+  <title id="transpose-title">議事録の転置</title>
+  <desc id="transpose-desc">議事録（配列軸）から論点抽出を経て論点ごとのMarkdown（論点軸）を作り、判断根拠・改訂履歴の畳み込みと自律性を持たせる書き直しという2つの作業からなる転置を行い、最後に他の論点mdとリンクするまでの5段階のプロセスを示す図。</desc>
+
+  <defs>
+    <marker id="transpose-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#767676"/>
+    </marker>
+  </defs>
+
+  <!-- background -->
+  <rect width="1280" height="720" fill="var(--paper)"/>
+
+  <!-- header -->
+  <text x="40" y="176" fill="var(--muted)" font-size="8" font-weight="500"
+        letter-spacing="0.18em" font-family="'Helvetica Neue', Helvetica, Arial, 'BIZ UDPGothic', Meiryo, 'MS PGothic', 'Hiragino Kaku Gothic Pro', sans-serif">配列軸 → 論点軸</text>
+  <text x="40" y="212" fill="var(--ink)" font-size="28" font-family="'Instrument Serif', serif">議事録の転置</text>
+  <text x="40" y="236" fill="var(--muted)" font-size="13"
+        font-family="'Helvetica Neue', Helvetica, Arial, 'BIZ UDPGothic', Meiryo, 'MS PGothic', 'Hiragino Kaku Gothic Pro', sans-serif">打ち合わせの記録を、あとから使えるナレッジに変換する</text>
+
+  <!-- connectors (drawn before nodes) -->
+  <line x1="240" y1="324" x2="280" y2="324" stroke="var(--muted)" stroke-width="1" marker-end="url(#transpose-arrow)"/>
+  <line x1="420" y1="324" x2="460" y2="324" stroke="var(--muted)" stroke-width="1" marker-end="url(#transpose-arrow)"/>
+  <line x1="700" y1="324" x2="740" y2="324" stroke="var(--muted)" stroke-width="1" marker-end="url(#transpose-arrow)"/>
+  <line x1="1020" y1="324" x2="1060" y2="324" stroke="var(--muted)" stroke-width="1" marker-end="url(#transpose-arrow)"/>
+
+  <!-- step 1: 議事録生成（配列軸） -->
+  <rect x="40" y="284" width="200" height="80" rx="6" fill="var(--paper-2)" stroke="rgba(51,51,51,0.35)" stroke-width="1"/>
+  <text x="140" y="318" text-anchor="middle" fill="var(--ink)" font-size="12" font-weight="600"
+        font-family="'Helvetica Neue', Helvetica, Arial, 'BIZ UDPGothic', Meiryo, 'MS PGothic', 'Hiragino Kaku Gothic Pro', sans-serif">議事録生成（配列軸）</text>
+  <text x="140" y="340" text-anchor="middle" fill="var(--muted)" font-size="9"
+        font-family="'Helvetica Neue', Helvetica, Arial, 'BIZ UDPGothic', Meiryo, 'MS PGothic', 'Hiragino Kaku Gothic Pro', sans-serif">時系列順に記録される</text>
+
+  <!-- step 2: 論点抽出 -->
+  <rect x="280" y="284" width="140" height="80" rx="6" fill="var(--paper-2)" stroke="rgba(51,51,51,0.35)" stroke-width="1"/>
+  <text x="350" y="318" text-anchor="middle" fill="var(--ink)" font-size="12" font-weight="600"
+        font-family="'Helvetica Neue', Helvetica, Arial, 'BIZ UDPGothic', Meiryo, 'MS PGothic', 'Hiragino Kaku Gothic Pro', sans-serif">論点抽出</text>
+  <text x="350" y="340" text-anchor="middle" fill="var(--muted)" font-size="9"
+        font-family="'Helvetica Neue', Helvetica, Arial, 'BIZ UDPGothic', Meiryo, 'MS PGothic', 'Hiragino Kaku Gothic Pro', sans-serif">直交・重要度順に抽出</text>
+
+  <!-- step 3: 論点ごとのmarkdown（論点軸） -->
+  <rect x="460" y="284" width="240" height="80" rx="6" fill="var(--paper-2)" stroke="rgba(51,51,51,0.35)" stroke-width="1"/>
+  <text x="580" y="328" text-anchor="middle" fill="var(--ink)" font-size="12" font-weight="600"
+        font-family="'Helvetica Neue', Helvetica, Arial, 'BIZ UDPGothic', Meiryo, 'MS PGothic', 'Hiragino Kaku Gothic Pro', sans-serif">論点ごとのmarkdown（論点軸）</text>
+
+  <!-- step 4: 転置 (focal zone, contains ①② as inner boxes) -->
+  <rect x="740" y="256" width="280" height="136" rx="8" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.2"/>
+  <text x="880" y="288" text-anchor="middle" fill="var(--accent)" font-size="14" font-weight="700"
+        font-family="'Helvetica Neue', Helvetica, Arial, 'BIZ UDPGothic', Meiryo, 'MS PGothic', 'Hiragino Kaku Gothic Pro', sans-serif">転置</text>
+
+  <rect x="756" y="296" width="248" height="32" rx="4" fill="var(--paper)" stroke="var(--accent-border)" stroke-width="1"/>
+  <text x="880" y="316" text-anchor="middle" fill="var(--ink)" font-size="11" font-weight="500"
+        font-family="'Helvetica Neue', Helvetica, Arial, 'BIZ UDPGothic', Meiryo, 'MS PGothic', 'Hiragino Kaku Gothic Pro', sans-serif">①判断根拠・改訂履歴の畳み込み</text>
+
+  <rect x="756" y="336" width="248" height="32" rx="4" fill="var(--paper)" stroke="var(--accent-border)" stroke-width="1"/>
+  <text x="880" y="356" text-anchor="middle" fill="var(--ink)" font-size="11" font-weight="500"
+        font-family="'Helvetica Neue', Helvetica, Arial, 'BIZ UDPGothic', Meiryo, 'MS PGothic', 'Hiragino Kaku Gothic Pro', sans-serif">②自律性を持たせる書き直し</text>
+
+  <!-- step 5: 他の論点mdとリンク -->
+  <rect x="1060" y="284" width="180" height="80" rx="6" fill="var(--paper-2)" stroke="rgba(51,51,51,0.35)" stroke-width="1"/>
+  <text x="1150" y="328" text-anchor="middle" fill="var(--ink)" font-size="12" font-weight="600"
+        font-family="'Helvetica Neue', Helvetica, Arial, 'BIZ UDPGothic', Meiryo, 'MS PGothic', 'Hiragino Kaku Gothic Pro', sans-serif">他の論点mdとリンク</text>
+
+  <!-- editorial aside -->
+  <text x="640" y="448" text-anchor="middle" fill="var(--muted)" font-size="14" font-style="italic"
+        font-family="'Instrument Serif', serif">「いつ喋ったか」ではなく「何を、なぜ決めたか」で並べ替える</text>
+
+  <!-- footer -->
+  <line x1="40" y1="488" x2="1240" y2="488" stroke="var(--rule)" stroke-width="0.8"/>
+  <text x="40" y="508" fill="var(--soft)" font-size="8" letter-spacing="0.08em"
+        font-family="'Helvetica Neue', Helvetica, Arial, 'BIZ UDPGothic', Meiryo, 'MS PGothic', 'Hiragino Kaku Gothic Pro', sans-serif">kiririmode.hatenablog.jp</text>
+</svg>
+</div>
+</body>
+</html>
