@@ -55,20 +55,59 @@ async function uploadToFotolife(imagePath, title) {
     apikey: apikey
   });
 
-  const imageBuffer = fs.readFileSync(imagePath);
-
   try {
     const response = await client.create({
       title: title,
-      image: imageBuffer
+      file: imagePath
     });
 
-    // レスポンスから画像URLを抽出
-    // hatena-fotolife-apiのレスポンスには画像URLが含まれている
-    return response.imageurl || response['hatena:imageurl'];
+    // レスポンスはAtomエントリXMLをパースしたオブジェクト。
+    // 画像URLは entry['hatena:imageurl']._ に格納される
+    const imageUrl = response.entry && response.entry['hatena:imageurl'] &&
+      response.entry['hatena:imageurl']._;
+
+    if (!imageUrl) {
+      throw new Error(`Unexpected Fotolife response shape: ${JSON.stringify(response)}`);
+    }
+
+    return imageUrl;
   } catch (error) {
     throw new Error(`Failed to upload image to Fotolife: ${error.message}`);
   }
+}
+
+/**
+ * 実行可能なChromium/Chrome実行ファイルのパスを解決する
+ * devcontainer（Linux）とmacOSホストの両方で動作させるため、
+ * `--version`の実行に成功する候補を順に探す。
+ * @returns {string} 実行可能なブラウザのパス
+ */
+function resolveChromeExecutablePath() {
+  const candidates = [
+    process.env.PUPPETEER_EXECUTABLE_PATH,
+    '/usr/bin/chromium',
+    '/opt/homebrew/bin/chromium',
+    '/usr/local/bin/chromium',
+    '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+    '/Applications/Chromium.app/Contents/MacOS/Chromium'
+  ].filter(Boolean);
+
+  for (const candidate of candidates) {
+    if (!fs.existsSync(candidate)) {
+      continue;
+    }
+    try {
+      execSync(`"${candidate}" --version`, { stdio: 'ignore' });
+      return candidate;
+    } catch {
+      // 実体が壊れている（例: Homebrewのラッパーだけが残っている）場合は次候補へ
+    }
+  }
+
+  throw new Error(
+    'No working Chrome/Chromium executable found. ' +
+    'Install Google Chrome or Chromium, or set PUPPETEER_EXECUTABLE_PATH.'
+  );
 }
 
 /**
@@ -165,28 +204,36 @@ async function preparePublish(draftFilePath) {
     // 一時ファイルにコピー
     fs.copyFileSync(draftFilePath, tempFilePath);
 
+    // 実行環境（devcontainer/macOSホスト）に応じたブラウザ実行ファイルを解決し、
+    // 一時的なPuppeteer設定ファイルを生成する
+    const basePuppeteerConfig = JSON.parse(fs.readFileSync('puppeteer-config.json', 'utf8'));
+    const resolvedPuppeteerConfig = {
+      ...basePuppeteerConfig,
+      executablePath: resolveChromeExecutablePath()
+    };
+    const tempPuppeteerConfigPath = path.join(tempDir, 'puppeteer-config.json');
+    fs.writeFileSync(tempPuppeteerConfigPath, JSON.stringify(resolvedPuppeteerConfig), 'utf8');
+
     // mermaid-cliでMermaid図をPNG化
     console.log('Converting Mermaid diagrams to PNG...');
     try {
       execSync(
-        `npx -y mmdc -i "${tempFilePath}" -o "${tempFilePath}" -e png -p puppeteer-config.json`,
+        `npx -y mmdc -i "${tempFilePath}" -o "${tempFilePath}" -e png -p "${tempPuppeteerConfigPath}"`,
         { stdio: 'inherit' }
       );
-    } catch (error) {
-      // エラーメッセージからPuppeteer設定エラーなど致命的なエラーを検出
-      const errorMessage = error.message || '';
-      const isFatalError =
-        errorMessage.includes('executablePath') ||
-        errorMessage.includes('Browser was not found') ||
-        errorMessage.includes('Failed to launch');
-
-      if (isFatalError) {
-        // 致命的なエラーの場合は処理を中断
-        throw new Error(`Fatal error during Mermaid conversion: ${errorMessage}`);
-      }
-
-      // Mermaid図がない場合など軽微なエラーは無視
+    } catch {
+      // Mermaid図がない場合もmmdcが非ゼロ終了することがあるため、
+      // ここでは警告のみ表示し、実際の成否は変換後の内容で判定する
       console.warn('Warning: mermaid-cli execution failed or no Mermaid diagrams found');
+    }
+
+    // 変換漏れの検出: ```mermaid フェンスが残っている場合は変換失敗とみなす
+    const convertedContent = fs.readFileSync(tempFilePath, 'utf8');
+    if (/```mermaid/.test(convertedContent)) {
+      throw new Error(
+        'Mermaid diagrams remain unconverted after mmdc execution. ' +
+        'Check that a working Chrome/Chromium is available (see resolveChromeExecutablePath).'
+      );
     }
 
     // 生成されたPNG画像を確認
@@ -200,6 +247,15 @@ async function preparePublish(draftFilePath) {
       const updatedContent = await replaceLocalImagesWithFotolife(tempFileContent, pngFiles, tempDir);
       fs.writeFileSync(tempFilePath, updatedContent, 'utf8');
       console.log('Image references updated');
+
+      // Fotolifeへのアップロードに失敗し、ローカル参照やundefinedが
+      // 残ったまま公開されることを防ぐ
+      if (/!\[diagram\]\((?:\.\/|undefined)/.test(updatedContent)) {
+        throw new Error(
+          'Some diagram images were not uploaded to Fotolife and still reference local/undefined paths. ' +
+          'Check HATENA_USERNAME/HATENA_API_KEY and the Fotolife API response.'
+        );
+      }
     }
 
     // 変換後のMarkdownを目的ディレクトリにコピー
