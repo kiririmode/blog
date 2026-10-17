@@ -74,4 +74,4 @@ GitHub Actionsがtextlint、markdownlintによる品質チェックを行い、�
 
 ## コンテンツガイドライン
 
-docs/contents-guideline.mdに従うこと。
+.claude/skills/create-entry/references/contents-guideline.mdに従うこと。
