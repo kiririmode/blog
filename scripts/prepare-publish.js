@@ -78,14 +78,13 @@ async function uploadToFotolife(imagePath, title) {
 
 /**
  * 実行可能なChromium/Chrome実行ファイルのパスを解決する
- * devcontainer（Linux）とmacOSホストの両方で動作させるため、
+ * Linux環境とmacOSの両方で動作させるため、
  * `--version`の実行に成功する候補を順に探す。
  * @returns {string} 実行可能なブラウザのパス
  */
 function resolveChromeExecutablePath() {
   const candidates = [
     process.env.PUPPETEER_EXECUTABLE_PATH,
-    '/usr/bin/chromium',
     '/opt/homebrew/bin/chromium',
     '/usr/local/bin/chromium',
     '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
@@ -204,7 +203,7 @@ async function preparePublish(draftFilePath) {
     // 一時ファイルにコピー
     fs.copyFileSync(draftFilePath, tempFilePath);
 
-    // 実行環境（devcontainer/macOSホスト）に応じたブラウザ実行ファイルを解決し、
+    // 実行環境（Linux/macOS）に応じたブラウザ実行ファイルを解決し、
     // 一時的なPuppeteer設定ファイルを生成する
     const basePuppeteerConfig = JSON.parse(fs.readFileSync('puppeteer-config.json', 'utf8'));
     const resolvedPuppeteerConfig = {
