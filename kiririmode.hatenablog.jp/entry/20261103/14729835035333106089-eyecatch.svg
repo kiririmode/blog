@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" font-family="'Hiragino Maru Gothic ProN','Zen Maru Gothic','M PLUS Rounded 1c','Hiragino Sans',sans-serif">
+  <defs>
+    <marker id="ah-soft" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M1,1 L9,5 L1,9 Q3,5 1,1 z" fill="#C9BFB3"/>
+    </marker>
+    <marker id="ah" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M1,1 L9,5 L1,9 Q3,5 1,1 z" fill="#5B4B3F"/>
+    </marker>
+    <linearGradient id="peak" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FF8A80"/>
+      <stop offset="1" stop-color="#FFD3B6"/>
+    </linearGradient>
+    <symbol id="sparkle" viewBox="-10 -10 20 20">
+      <path d="M0,-10 Q1.5,-1.5 10,0 Q1.5,1.5 0,10 Q-1.5,1.5 -10,0 Q-1.5,-1.5 0,-10 z"/>
+    </symbol>
+  </defs>
+
+  <!-- 背景 -->
+  <rect width="1200" height="630" fill="#FFF8EF"/>
+  <circle cx="1130" cy="70" r="120" fill="#FFE3D3" opacity="0.7"/>
+  <circle cx="40" cy="600" r="110" fill="#DDF3EC" opacity="0.8"/>
+  <circle cx="1180" cy="610" r="70" fill="#E4EEFF" opacity="0.8"/>
+  <g fill="#F3D9C6">
+    <circle cx="560" cy="40" r="5"/><circle cx="600" cy="62" r="3.5"/><circle cx="1010" cy="170" r="4"/>
+    <circle cx="180" cy="330" r="3.5"/><circle cx="760" cy="600" r="4"/><circle cx="30" cy="190" r="4"/>
+  </g>
+
+  <!-- タイトル -->
+  <rect x="676" y="68" width="190" height="24" rx="12" fill="#FFE08A"/>
+  <text x="60" y="88" font-size="44" font-weight="700" fill="#4A3F35">AIの要約は、論点を並べてから尖らせる</text>
+  <text x="62" y="134" font-size="23" fill="#7A6A5C">通説から遠い順に少なく並べて、軸を自分で選んでから掘り下げる</text>
+
+  <!-- 上段: いきなり要約（ねむい） -->
+  <g>
+    <rect x="62" y="196" width="78" height="96" rx="18" fill="#FFFFFF" stroke="#D8CEC2" stroke-width="3"/>
+    <path d="M80,232 q6,5 12,0" fill="none" stroke="#B5A898" stroke-width="3" stroke-linecap="round"/>
+    <path d="M110,232 q6,5 12,0" fill="none" stroke="#B5A898" stroke-width="3" stroke-linecap="round"/>
+    <path d="M95,258 h12" stroke="#B5A898" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="80" cy="250" r="5" fill="#F6D5CF" opacity="0.7"/>
+    <circle cx="122" cy="250" r="5" fill="#F6D5CF" opacity="0.7"/>
+
+    <text x="497" y="230" font-size="22" fill="#A89A8B" text-anchor="middle">いきなり要約させると…</text>
+    <line x1="165" y1="246" x2="830" y2="246" stroke="#C9BFB3" stroke-width="4" stroke-dasharray="2 12" stroke-linecap="round" marker-end="url(#ah-soft)"/>
+
+    <line x1="862" y1="252" x2="1118" y2="252" stroke="#C9BFB3" stroke-width="8" stroke-linecap="round"/>
+    <text x="1060" y="226" font-size="20" fill="#C9BFB3" font-weight="700">z</text>
+    <text x="1078" y="212" font-size="24" fill="#C9BFB3" font-weight="700">z</text>
+    <text x="1100" y="194" font-size="28" fill="#C9BFB3" font-weight="700">Z</text>
+    <text x="990" y="292" font-size="22" fill="#A89A8B" text-anchor="middle">平坦な一般論</text>
+  </g>
+
+  <line x1="70" y1="338" x2="1130" y2="338" stroke="#EADFD2" stroke-width="4" stroke-dasharray="1 14" stroke-linecap="round"/>
+
+  <!-- 下段: 記事（論点がいっぱい） -->
+  <rect x="60" y="410" width="86" height="128" rx="20" fill="#FFFFFF" stroke="#5B4B3F" stroke-width="3"/>
+  <circle cx="84" cy="436" r="8" fill="#FF8A80"/>
+  <circle cx="122" cy="448" r="8" fill="#7DB7F5"/>
+  <circle cx="96" cy="466" r="8" fill="#6CCFB4"/>
+  <circle cx="126" cy="478" r="8" fill="#B79CF0"/>
+  <circle cx="80" cy="486" r="8" fill="#FFD166"/>
+  <circle cx="92" cy="512" r="3.5" fill="#5B4B3F"/>
+  <circle cx="114" cy="512" r="3.5" fill="#5B4B3F"/>
+  <path d="M97,520 q6,6 12,0" fill="none" stroke="#5B4B3F" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- 第1段 -->
+  <rect x="160" y="450" width="64" height="30" rx="15" fill="#5B4B3F"/>
+  <text x="192" y="472" font-size="17" font-weight="700" fill="#FFFFFF" text-anchor="middle">第1段</text>
+  <line x1="162" y1="494" x2="222" y2="494" stroke="#5B4B3F" stroke-width="4" stroke-linecap="round" marker-end="url(#ah)"/>
+
+  <text x="244" y="392" font-size="20" font-weight="700" fill="#F06A5D">通説から遠い順に、少なく</text>
+  <rect x="242" y="406" width="226" height="48" rx="24" fill="#FFF1EE" stroke="#FF8A80" stroke-width="3"/>
+  <circle cx="270" cy="430" r="15" fill="#FF8A80"/>
+  <text x="270" y="437" font-size="18" font-weight="700" fill="#FFFFFF" text-anchor="middle">1</text>
+  <rect x="296" y="425" width="146" height="10" rx="5" fill="#FFD0C9"/>
+  <use href="#sparkle" x="474" y="404" width="20" height="20" fill="#FFC14D"/>
+
+  <rect x="242" y="464" width="226" height="48" rx="24" fill="#EEF5FF" stroke="#7DB7F5" stroke-width="3"/>
+  <circle cx="270" cy="488" r="15" fill="#7DB7F5"/>
+  <text x="270" y="495" font-size="18" font-weight="700" fill="#FFFFFF" text-anchor="middle">2</text>
+  <rect x="296" y="483" width="120" height="10" rx="5" fill="#CFE2FB"/>
+
+  <rect x="242" y="522" width="226" height="48" rx="24" fill="#ECF9F5" stroke="#6CCFB4" stroke-width="3"/>
+  <circle cx="270" cy="546" r="15" fill="#6CCFB4"/>
+  <text x="270" y="553" font-size="18" font-weight="700" fill="#FFFFFF" text-anchor="middle">3</text>
+  <rect x="296" y="541" width="132" height="10" rx="5" fill="#C9EEE3"/>
+
+  <line x1="484" y1="490" x2="556" y2="490" stroke="#5B4B3F" stroke-width="4" stroke-linecap="round" marker-end="url(#ah)"/>
+
+  <!-- 人（軸を選ぶ） -->
+  <path d="M576,532 Q576,482 614,482 Q652,482 652,532 Z" fill="#FFC9A8"/>
+  <circle cx="614" cy="450" r="30" fill="#FFE5D2" stroke="#5B4B3F" stroke-width="3"/>
+  <path d="M586,440 Q592,416 614,416 Q638,416 643,440 Q628,428 614,432 Q598,436 586,440 z" fill="#5B4B3F"/>
+  <circle cx="604" cy="452" r="3.5" fill="#5B4B3F"/>
+  <circle cx="624" cy="452" r="3.5" fill="#5B4B3F"/>
+  <path d="M608,463 q6,5 12,0" fill="none" stroke="#5B4B3F" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="597" cy="462" r="5" fill="#FF9C8F" opacity="0.6"/>
+  <circle cx="632" cy="462" r="5" fill="#FF9C8F" opacity="0.6"/>
+
+  <circle cx="694" cy="452" r="24" fill="#FF8A80"/>
+  <text x="694" y="460" font-size="22" font-weight="700" fill="#FFFFFF" text-anchor="middle">主</text>
+  <circle cx="694" cy="508" r="20" fill="#FFFFFF" stroke="#7DB7F5" stroke-width="3"/>
+  <text x="694" y="515" font-size="19" font-weight="700" fill="#5A9BE6" text-anchor="middle">従</text>
+  <text x="640" y="566" font-size="19" fill="#5B4B3F" text-anchor="middle">軸を自分で選ぶ</text>
+
+  <!-- 第2段 -->
+  <rect x="756" y="450" width="64" height="30" rx="15" fill="#5B4B3F"/>
+  <text x="788" y="472" font-size="17" font-weight="700" fill="#FFFFFF" text-anchor="middle">第2段</text>
+  <line x1="740" y1="494" x2="834" y2="494" stroke="#5B4B3F" stroke-width="4" stroke-linecap="round" marker-end="url(#ah)"/>
+
+  <!-- とがったメッセージ -->
+  <path d="M862,540 L944,540 Q952,540 956,530 L984,414 Q990,396 996,414 L1024,530 Q1028,540 1036,540 L1118,540 Z" fill="url(#peak)" opacity="0.55"/>
+  <path d="M862,540 L944,540 Q952,540 956,530 L984,414 Q990,396 996,414 L1024,530 Q1028,540 1036,540 L1118,540" fill="none" stroke="#F06A5D" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+  <circle cx="980" cy="492" r="3.5" fill="#5B4B3F"/>
+  <circle cx="1000" cy="492" r="3.5" fill="#5B4B3F"/>
+  <path d="M984,503 q6,6 12,0" fill="none" stroke="#5B4B3F" stroke-width="3" stroke-linecap="round"/>
+  <use href="#sparkle" x="1022" y="380" width="30" height="30" fill="#FFC14D"/>
+  <use href="#sparkle" x="938" y="404" width="20" height="20" fill="#FFC14D"/>
+  <use href="#sparkle" x="1050" y="430" width="16" height="16" fill="#7DB7F5"/>
+  <text x="990" y="588" font-size="22" font-weight="700" fill="#F06A5D" text-anchor="middle">とがったメッセージ！</text>
+</svg>
