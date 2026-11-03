@@ -1,61 +1,35 @@
-
 {
   "filters": {
     "comments": true,
     "whitelist": {
       "allow": [
-        "/スクラムマスター/",
         "/\\[(https?|tex):.*\\]/",
-        "デグレード",
-        "一つ一つ",
-        "幸か不幸か",
         "/^> .*$/",
-        "mysql",
         "[wikipedia",
-        "同時確率密度関数",
-        "周辺確率密度関数",
+        ":wikipedia",
         "/\\$\\$[^]*?\\$\\$/m",
-        "/\\$[^]*?\\$/",
-        "改正個人情報保護法",
-        "個人情報保護委員会",
-        "個人情報取扱事業者",
-        "個人関連情報取扱事業者",
-        "改正個人情報保護法",
-        "クッキー",
-        "git",
-        "どこもかしこも",
-        "非負値可測関数列",
-        "！",
-        ":wikipedia"
+        "/\\$[^]*?\\$/"
       ]
     }
   },
   "rules": {
-    "preset-ja-technical-writing": {
-      "no-exclamation-question-mark": false,
-      "sentence-length": {
-        "max": 160
-      },
-      "max-kanji-continuous-len": {
-        "max": 7,
-        "allow": ["事前課題解決力"]
-      },
-      "ja-no-successive-word": {
-        "allowOnomatopee": true,
-        "allow": ["！", "ある"]
-      },
-      "no-mix-dearu-desumasu": {
-        "preferInHeader": "である",
-        "preferInBody": "ですます",
-        "preferInBoxiku": "である"
-      },
-      "ja-no-weak-phrase": false
+    "no-dropping-the-ra": true,
+    "no-doubled-joshi": {
+      "min_interval": 1,
+      "allow": ["も", "か"]
     },
-    "spellcheck-tech-word": true,
+    "ja-no-abusage": true,
+    "@textlint-rule/no-unmatched-pair": true,
+    "no-nfd": true,
+    "@textlint-rule/no-invalid-control-character": true,
+    "no-zero-width-spaces": true,
+    "no-hankaku-kana": true,
     "textlint-rule-preset-ja-spacing": true,
     "prh": {
       "rulePaths": ["./prh.yml"]
     },
-    "@textlint-ja/preset-ai-writing": true
+    "@textlint-ja/preset-ai-writing": {
+      "ai-tech-writing-guideline": false
+    }
   }
 }
