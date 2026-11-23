@@ -6,6 +6,7 @@
 1. front matter の `Draft` の行を消し、`Date` を日本時間の現在時刻にする。
 2. 更新後の `Date` から、公開日のディレクトリ `entry/YYYYMMDD/` を決める。
 3. 本文にローカルの画像参照が残っていれば、`npm run upload-images` を勧めて止まる。
+   フェンスで囲んだコードブロックの中の画像参照は数えない。
 4. Mermaid 図を PNG にし、フォトライフに上げ、元の大きさの URL に置き換える。
 5. エントリ、Mermaid の PNG、下書き置き場の `<entry_id>-*` の付属ファイルを、公開日のディレクトリへ移す。
 6. 下書きを消す。
@@ -19,7 +20,6 @@ Usage:
 from __future__ import annotations
 
 import argparse
-import re
 import sys
 import tempfile
 from datetime import datetime
@@ -28,10 +28,8 @@ from pathlib import Path
 import entry_files
 import fotolife
 import front_matter
+import local_images
 import mermaid
-
-# URL ではなくファイルのパスを指す画像参照
-_LOCAL_IMAGE_REF = re.compile(r"!\[[^\]]*\]\((?!https?://)[^)\s]+\)")
 
 
 def prepare_publish(draft: Path, keep_date: bool) -> Path:
@@ -54,16 +52,16 @@ def prepare_publish(draft: Path, keep_date: bool) -> Path:
                 url = fotolife.upload_png(image, image.stem)
                 print(f"uploaded: {image.name} -> {url}")
                 content = content.replace(f"![diagram](./{image.name})", f"![diagram]({url})")
-            if _LOCAL_IMAGE_REF.search(content):
+            if local_images.find(content):
                 raise RuntimeError("Mermaid 図の PNG の一部が、フォトライフの URL に置き換わりませんでした")
         return entry_files.move_to_published_dir(draft, content, images, published_dir)
 
 
 def _ensure_no_local_image_refs(content: str, draft: Path) -> None:
-    local_refs = _LOCAL_IMAGE_REF.findall(content)
+    local_refs = [m.group(0) for m in local_images.find(content)]
     if local_refs:
         raise RuntimeError(
-            "本文にローカルの画像参照が残っています。"
+            "本文にローカルの画像参照が残っています。画像を SVG か PNG にし、"
             f"先に npm run upload-images {draft} でフォトライフに上げてください: " + ", ".join(local_refs)
         )
 

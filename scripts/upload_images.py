@@ -2,7 +2,9 @@
 """Markdown 中のローカル画像参照を、はてなフォトライフの URL に置き換える。
 
 本文に `![構成図](./xxx.svg)` のようにローカルの画像を書いておくと、
-このスクリプトが次を順に実行する。
+このスクリプトが次を順に実行する。扱えるのは SVG と PNG である。
+それ以外の拡張子の参照があれば、何も上げずに止まる。
+フェンスで囲んだコードブロックの中の画像参照は対象外である。
 
 1. SVG なら resvg で PNG に変換する（PNG はそのまま使う）。
 2. PNG をはてなフォトライフにアップロードする。
@@ -17,15 +19,15 @@ Usage:
 from __future__ import annotations
 
 import argparse
-import re
 import subprocess
 import sys
 from pathlib import Path
 
 import fotolife
+import local_images
 
-# ローカル参照だけを拾う。http(s) で始まる参照は対象外。
-IMAGE_PATTERN = re.compile(r"!\[(?P<alt>[^\]]*)\]\((?P<path>(?!https?://)[^)\s]+\.(?:svg|png))\)")
+# アップロードできる画像の拡張子。SVG は PNG に変換してから上げる。
+UPLOADABLE_SUFFIXES = {".svg", ".png"}
 
 # resvg は文字の代替フォントに macOS の LastResort（全文字を□で描くフォント）を選ぶことがある。
 # 絵文字を含む <text> 要素は、その要素全体が□になる。
@@ -66,25 +68,33 @@ def svg_to_png(svg: Path, zoom: float) -> Path:
 
 def process(markdown: Path, dry_run: bool, zoom: float) -> int:
     content = markdown.read_text(encoding="utf-8")
-    matches = list(IMAGE_PATTERN.finditer(content))
+    matches = local_images.find(content)
     if not matches:
         print("No local image references found.")
         return 0
+    unsupported = [m.group(0) for m in matches if Path(m.group("path")).suffix.lower() not in UPLOADABLE_SUFFIXES]
+    if unsupported:
+        raise ValueError("SVG か PNG でない画像はアップロードできません。SVG か PNG にしてください: " + ", ".join(unsupported))
 
+    # 書き換えで本文の長さが変わるので、Match の位置をずらして使う。
+    offset = 0
     for match in matches:
         reference = match.group(0)
         image = (markdown.parent / match.group("path")).resolve()
         if not image.exists():
             raise FileNotFoundError(f"{reference}: {image} does not exist")
 
-        png = svg_to_png(image, zoom) if image.suffix == ".svg" else image
+        png = svg_to_png(image, zoom) if image.suffix.lower() == ".svg" else image
         print(f"{reference} -> {png}")
         if dry_run:
             continue
 
         image_url = fotolife.upload_png(png, png.stem)
         print(f"  uploaded: {image_url}")
-        content = content.replace(reference, f"![{match.group('alt')}]({image_url})", 1)
+        replacement = local_images.with_url(reference, image_url)
+        start, end = match.start() + offset, match.end() + offset
+        content = content[:start] + replacement + content[end:]
+        offset += len(replacement) - len(reference)
         # 1枚ごとに書き戻し、途中で失敗しても上がった分の URL を失わない。
         markdown.write_text(content, encoding="utf-8")
 

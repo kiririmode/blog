@@ -172,6 +172,27 @@ class PreparePublishTest(unittest.TestCase):
         self.assertTrue(attached.exists())
         self.assertEqual([p.name for p in self.entry_dir.iterdir()], ["_draft"])
 
+    def test_ignores_local_image_reference_inside_fenced_code_block(self) -> None:
+        body = BODY + "\n```markdown\n![構成図](./architecture.svg)\n```\n\n~~~\n![図](./x.jpg)\n~~~\n"
+        self.draft.write_text(draft_text(body=body), encoding="utf-8")
+
+        result = self.run_cli("--keep-date")
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        entry = self.entry_dir / "20200102" / f"{ENTRY_ID}.md"
+        self.assertEqual(entry.read_text(encoding="utf-8"), published_text("2020-01-02T03:04:05+09:00", body=body))
+
+    def test_stops_on_local_image_reference_of_any_extension(self) -> None:
+        original = draft_text(body=BODY + "\n![写真](./photo.jpg)\n")
+        self.draft.write_text(original, encoding="utf-8")
+
+        result = self.run_cli()
+
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("./photo.jpg", result.stderr)
+        self.assertIn("SVG か PNG", result.stderr)
+        self.assertEqual(self.draft.read_text(encoding="utf-8"), original)
+
 
 if __name__ == "__main__":
     unittest.main()
