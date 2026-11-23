@@ -1,8 +1,6 @@
-"""はてなフォトライフへの画像のアップロードと、その URL の扱い。
+"""はてなフォトライフへの画像のアップロード。
 
-フォトライフの API が返す画像 URL（`hatena:imageurl`）は、横幅 450px の縮小版 URL を指す。
-元の大きさの URL は、拡張子の前に `_original` を付けた形である。
-本文には元の大きさの URL を書く（docs/adr/0003）。
+本文には、フォトライフの API が返す画像 URL（`hatena:imageurl`）をそのまま書く（docs/adr/0004）。
 認証には環境変数 HATENA_USERNAME と HATENA_API_KEY を使う。
 """
 
@@ -11,7 +9,6 @@ from __future__ import annotations
 import base64
 import hashlib
 import os
-import re
 import secrets
 import urllib.error
 import urllib.request
@@ -23,24 +20,9 @@ from xml.sax.saxutils import escape
 FOTOLIFE_POST_URL = "https://f.hatena.ne.jp/atom/post"
 HATENA_NS = "http://www.hatena.ne.jp/info/xmlns#"
 
-# フォトライフの画像 URL。stem はファイル名から拡張子を除いた部分。
-FOTOLIFE_URL_PATTERN = re.compile(
-    r"https?://[\w.-]*(?:st-hatena\.com|hatena\.ne\.jp)/images/fotolife/[\w./-]*?/(?P<stem>[\w-]+)\.\w+"
-)
-
-
-def find_shrunk_urls(text: str) -> list[str]:
-    """text にあるフォトライフの URL のうち、縮小版 URL を返す。"""
-    return [m.group(0) for m in FOTOLIFE_URL_PATTERN.finditer(text) if not m.group("stem").endswith("_original")]
-
-
-def to_original_url(shrunk_url: str) -> str:
-    """縮小版 URL を元の大きさの URL にする。"""
-    return re.sub(r"(\.\w+)$", r"_original\1", shrunk_url)
-
 
 def upload_png(png: Path, title: str) -> str:
-    """PNG をフォトライフにアップロードし、元の大きさの URL を返す。"""
+    """PNG をフォトライフにアップロードし、フォトライフが返す画像 URL を返す。"""
     username = os.environ.get("HATENA_USERNAME")
     api_key = os.environ.get("HATENA_API_KEY")
     if not username or not api_key:
@@ -72,7 +54,7 @@ def upload_png(png: Path, title: str) -> str:
     image_url = ET.fromstring(xml).findtext(f"{{{HATENA_NS}}}imageurl")
     if not image_url:
         raise RuntimeError(f"フォトライフの応答に画像 URL がありません: {xml.decode(errors='replace')}")
-    return to_original_url(image_url)
+    return image_url
 
 
 def _wsse_header(username: str, api_key: str) -> str:

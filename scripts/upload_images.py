@@ -8,7 +8,7 @@
 
 1. SVG なら resvg で PNG に変換する（PNG はそのまま使う）。
 2. PNG をはてなフォトライフにアップロードする。
-3. 本文の参照を、元の大きさの URL `![構成図](https://cdn-ak.f.st-hatena.com/..._original.png)` に書き換える。
+3. 本文の参照を、フォトライフが返す URL `![構成図](https://cdn-ak.f.st-hatena.com/....png)` に書き換える。
 
 認証には環境変数 HATENA_USERNAME と HATENA_API_KEY を使う（.envrc が .env を読む）。
 
