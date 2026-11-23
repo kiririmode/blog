@@ -7,6 +7,7 @@ import os
 import re
 import subprocess
 from pathlib import Path
+from typing import NamedTuple
 
 PUPPETEER_CONFIG = Path(__file__).resolve().parent.parent / "puppeteer-config.json"
 
@@ -21,15 +22,21 @@ _CHROME_CANDIDATES = [
 ]
 
 
+class RenderedDiagram(NamedTuple):
+    """PNG にした Mermaid 図と、本文でそれを指すローカルの画像参照。"""
+
+    png: Path
+    reference: str
+
+
 def has_diagrams(content: str) -> bool:
     return bool(_MERMAID_FENCE.search(content))
 
 
-def render(content: str, name: str, workdir: Path) -> tuple[str, list[Path]]:
-    """Mermaid 図を PNG にする。
+def render(content: str, name: str, workdir: Path) -> tuple[str, list[RenderedDiagram]]:
+    """Mermaid 図を PNG にし、図を PNG への参照に置き換えた本文と、PNG ごとの参照を返す。
 
     PNG は workdir に `<name の stem>-<連番>.png` として書く。
-    返す本文では、図が `![diagram](./<PNG のファイル名>)` に置き換わっている。
     """
     markdown = workdir / name
     markdown.write_text(content, encoding="utf-8")
@@ -46,7 +53,9 @@ def render(content: str, name: str, workdir: Path) -> tuple[str, list[Path]]:
     converted = markdown.read_text(encoding="utf-8")
     if result.returncode != 0 or has_diagrams(converted):
         raise RuntimeError(f"Mermaid 図を PNG にできませんでした: {result.stderr.strip() or result.stdout.strip()}")
-    return converted, sorted(workdir.glob(f"{markdown.stem}-*.png"))
+    # mmdc は図を `![diagram](./<PNG のファイル名>)` に置き換える。
+    pngs = sorted(workdir.glob(f"{markdown.stem}-*.png"))
+    return converted, [RenderedDiagram(png, f"![diagram](./{png.name})") for png in pngs]
 
 
 def _chrome_executable() -> str:

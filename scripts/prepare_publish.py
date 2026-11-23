@@ -45,16 +45,17 @@ def prepare_publish(draft: Path, keep_date: bool) -> Path:
     _ensure_no_local_image_refs(content, draft)
 
     with tempfile.TemporaryDirectory() as workdir:
-        images: list[Path] = []
+        diagrams: list[mermaid.RenderedDiagram] = []
         if mermaid.has_diagrams(content):
-            content, images = mermaid.render(content, draft.name, Path(workdir))
-            for image in images:
-                url = fotolife.upload_png(image, image.stem)
-                print(f"uploaded: {image.name} -> {url}")
-                content = content.replace(f"![diagram](./{image.name})", f"![diagram]({url})")
+            content, diagrams = mermaid.render(content, draft.name, Path(workdir))
+            for diagram in diagrams:
+                url = fotolife.upload_png(diagram.png, diagram.png.stem)
+                print(f"uploaded: {diagram.png.name} -> {url}")
+                content = content.replace(diagram.reference, local_images.with_url(diagram.reference, url))
             if local_images.find(content):
                 raise RuntimeError("Mermaid 図の PNG の一部が、フォトライフの URL に置き換わりませんでした")
-        return entry_files.move_to_published_dir(draft, content, images, published_dir)
+        mermaid_pngs = [diagram.png for diagram in diagrams]
+        return entry_files.move_to_published_dir(draft, content, mermaid_pngs, published_dir)
 
 
 def _ensure_no_local_image_refs(content: str, draft: Path) -> None:
