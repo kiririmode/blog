@@ -35,10 +35,13 @@ _LOCAL_IMAGE_REF = re.compile(r"!\[[^\]]*\]\((?!https?://)[^)\s]+\)")
 
 
 def prepare_publish(draft: Path, keep_date: bool) -> Path:
-    content, date = front_matter.publish(
-        draft.read_text(encoding="utf-8"),
-        None if keep_date else datetime.now(front_matter.JST),
-    )
+    try:
+        content, date = front_matter.publish(
+            draft.read_text(encoding="utf-8"),
+            None if keep_date else datetime.now(front_matter.JST),
+        )
+    except front_matter.MissingDateError as e:
+        raise RuntimeError(f"{e}。--keep-date を外してください") from e
     published_dir = draft.parent.parent / date.astimezone(front_matter.JST).strftime("%Y%m%d")
 
     _ensure_no_local_image_refs(content, draft)

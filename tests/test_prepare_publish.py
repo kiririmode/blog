@@ -67,8 +67,10 @@ class PreparePublishTest(unittest.TestCase):
     def tearDown(self) -> None:
         self._tmp.cleanup()
 
-    def run_cli(self, *args: str) -> subprocess.CompletedProcess[str]:
+    def run_cli(self, *args: str, tz: str | None = None) -> subprocess.CompletedProcess[str]:
         env = {k: v for k, v in os.environ.items() if not k.startswith("HATENA_")}
+        if tz is not None:
+            env["TZ"] = tz
         return subprocess.run(
             [sys.executable, str(CLI), str(self.draft), *args],
             capture_output=True,
@@ -110,6 +112,25 @@ class PreparePublishTest(unittest.TestCase):
         self.assertEqual(self.published_entries(), [entry])
         self.assertEqual(entry.read_text(encoding="utf-8"), published_text("2020-01-02T03:04:05+09:00"))
         self.assertFalse(self.draft.exists())
+
+    def test_keep_date_reads_date_without_timezone_as_jst(self) -> None:
+        self.draft.write_text(draft_text(date="2026-01-01T23:30:00"), encoding="utf-8")
+
+        result = self.run_cli("--keep-date", tz="UTC")
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        entry = self.entry_dir / "20260101" / f"{ENTRY_ID}.md"
+        self.assertEqual(self.published_entries(), [entry])
+        self.assertEqual(entry.read_text(encoding="utf-8"), published_text("2026-01-01T23:30:00"))
+
+    def test_keep_date_without_date_stops_and_suggests_dropping_the_option(self) -> None:
+        self.draft.write_text(draft_text().replace("Date: 2020-01-02T03:04:05+09:00\n", ""), encoding="utf-8")
+
+        result = self.run_cli("--keep-date")
+
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("--keep-date", result.stderr)
+        self.assertTrue(self.draft.exists())
 
     def test_moves_own_attached_files_and_leaves_other_entries_files(self) -> None:
         self.draft.write_text(draft_text(), encoding="utf-8")
