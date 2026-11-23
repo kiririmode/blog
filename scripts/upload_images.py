@@ -118,7 +118,8 @@ def upload_to_fotolife(png: Path, title: str) -> str:
     image_url = ET.fromstring(xml).findtext(f"{{{HATENA_NS}}}imageurl")
     if not image_url:
         raise RuntimeError(f"Unexpected Fotolife response: {xml.decode(errors='replace')}")
-    return image_url
+    # imageurl は横幅 450px に縮小した画像を指す。元の大きさの画像は拡張子の前に _original が付く。
+    return re.sub(r"(\.\w+)$", r"_original\1", image_url)
 
 
 def process(markdown: Path, dry_run: bool, zoom: float) -> int:
