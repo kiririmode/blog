@@ -31,7 +31,8 @@ EditURL: https://blog.hatena.ne.jp/...
 
 注意事項。
 
-- 既存エントリのフロントマターは絶対に変更しないこと
+- 公開済みエントリのfront matterは絶対に変更しないこと
+- 下書きのfront matterは、`npm run prepare-publish`が更新する。`Draft`の行を消し、`Date`を公開時刻にする
 - Dateフィールドが存在しないばあいは、現在時刻を上記形式で埋めること
 
 ## よく使うコマンド
@@ -50,28 +51,40 @@ blogsyncを使用して新しい下書きエントリを作成します。ファ
 npm run lint path/to/file.md   # 特定のファイルをリント
 ```
 
-### 公開準備と公開フロー
-
-ブログエントリを公開するには、以下のステップを実行します。
+### 画像の掲載
 
 ```bash
-# 下書きを準備
+npm run upload-images kiririmode.hatenablog.jp/entry/_draft/123456.md
+```
+
+本文の`![alt](./123456-figure.svg)`のようなローカルの画像参照を、フォトライフが返すURLに置き換える。画像は、`<entry_id>-`で始まる名前にして下書き置き場へ置く。
+
+### 公開準備と公開フロー
+
+```bash
 npm run prepare-publish kiririmode.hatenablog.jp/entry/_draft/123456.md
 ```
 
-このコマンドは以下を自動実行します。
+front matterの更新、Mermaid図の画像化、付属ファイルを含む公開日のディレクトリへの移動をまとめて実行する。ローカルの画像参照が残っていると止まるので、先に`upload-images`を実行する。詳細は`python3 scripts/prepare_publish.py --help`を参照すること。
 
-- Mermaid図をPNG画像に変換して、はてなPhotolifeにアップロード
-- Markdown内のMermaid codeblock記述をはてなPhotolifeの画像URL(`![](https://...)`)に置換
-- PNG画像を`kiririmode.hatenablog.jp/entry/YYYYMMDD/`ディレクトリに移動
-- 元の下書きファイルを削除
-
-#### 自動公開
-
-GitHub Actionsがtextlint、markdownlintによる品質チェックを行い、問題なければblogsyncによるはてなブログへ公開します。
+公開は、`kiririmode.hatenablog.jp/entry/YYYYMMDD/*.md`をmainへマージしたときに起きる。GitHub Actions（`.github/workflows/blog.yml`）がlintのあとblogsyncで、はてなブログのエントリを上書きする。成否は`publish`ジョブの「Post changed entries」ステップで、blogsyncのPUTが200を返しているかで確かめる。
 
 注意: `_draft/`配下のファイルを直接コミット・プッシュしても公開されません。必ず`npm run prepare-publish`を実行してください。
 
 ## コンテンツガイドライン
 
 .claude/skills/create-entry/references/contents-guideline.mdに従うこと。
+
+## Agent skills
+
+### Issue tracker
+
+Issues and specs live in GitHub Issues of kiririmode/blog (via the `gh` CLI). See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+The five default triage labels (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`). See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context: `GLOSSARY.md` and `docs/adr/` at the repo root. See `docs/agents/domain.md`.

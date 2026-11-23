@@ -1,0 +1,30 @@
+# 公開ワークフローのスクリプト（scripts/）のテストを動かす。
+# 公開（blog.yml の publish ジョブ）とは独立させ、エントリの公開を起こさない。
+name: scripts test
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "scripts/**"
+      - "tests/**"
+      - ".github/workflows/scripts-test.yml"
+  pull_request:
+    paths:
+      - "scripts/**"
+      - "tests/**"
+      - ".github/workflows/scripts-test.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  unittest:
+    name: Run unittest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Run unittest
+        run: python3 -m unittest discover -s tests -v

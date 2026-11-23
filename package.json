@@ -6,7 +6,7 @@
   "scripts": {
     "entry": "echo | blogsync post --draft kiririmode.hatenablog.jp | tail -1 | awk '{ print $1 }'",
     "lint": "sh -c 'textlint \"$@\" && markdownlint \"$@\"' --",
-    "prepare-publish": "node scripts/prepare-publish.js",
+    "prepare-publish": "python3 scripts/prepare_publish.py",
     "upload-images": "python3 scripts/upload_images.py",
     "publish": "blogsync push"
   },
@@ -18,7 +18,6 @@
     "@textlint-ja/textlint-rule-preset-ai-writing": "^1.6.1",
     "@textlint-rule/textlint-rule-no-invalid-control-character": "3.0.0",
     "@textlint-rule/textlint-rule-no-unmatched-pair": "2.0.4",
-    "hatena-fotolife-api": "^2.0.0",
     "markdownlint-cli": "^0.50.0",
     "textlint": "16.1.2",
     "textlint-filter-rule-comments": "1.3.0",
