@@ -31,7 +31,8 @@ EditURL: https://blog.hatena.ne.jp/...
 
 注意事項。
 
-- 公開済みエントリのフロントマターは絶対に変更しないこと。例外は、`npm run prepare-publish`が下書きの`Draft`の行を消し、`Date`を公開時刻にすることだけである
+- 公開済みエントリのfront matterは絶対に変更しないこと
+- 下書きのfront matterは、`npm run prepare-publish`が更新する。`Draft`の行を消し、`Date`を公開時刻にする
 - Dateフィールドが存在しないばあいは、現在時刻を上記形式で埋めること
 
 ## よく使うコマンド
