@@ -123,3 +123,6 @@ venv/
 # 計画ファイル（ローカル作業用）
 plans/
 
+
+# Python
+__pycache__/
