@@ -105,7 +105,7 @@ jobs:
           done
 
       # 変更されたファイルにフォトライフの縮小版 URL がないか検査（変更があった場合のみ）
-      - name: Check shrunk Fotolife URLs on changed files
+      - name: 変更されたファイルのフォトライフの縮小版 URL を検査
         if: steps.changed-files.outputs.any_changed == 'true'
         run: python3 scripts/check_shrunk_fotolife_urls.py ${{ steps.changed-files.outputs.all_changed_files }}
 

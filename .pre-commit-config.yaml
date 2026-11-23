@@ -12,7 +12,7 @@ repos:
         entry: npx markdownlint-cli
         files: \.md$
       - id: shrunk-fotolife-url
-        name: shrunk Fotolife URL
+        name: フォトライフの縮小版 URL
         language: system
         entry: python3 scripts/check_shrunk_fotolife_urls.py
         files: \.md$

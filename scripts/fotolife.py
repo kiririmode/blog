@@ -67,11 +67,11 @@ def upload_png(png: Path, title: str) -> str:
         with urllib.request.urlopen(request) as response:
             xml = response.read()
     except urllib.error.HTTPError as e:
-        raise RuntimeError(f"Fotolife upload failed: HTTP {e.code} {e.read().decode(errors='replace')}") from e
+        raise RuntimeError(f"フォトライフへのアップロードに失敗しました: HTTP {e.code} {e.read().decode(errors='replace')}") from e
 
     image_url = ET.fromstring(xml).findtext(f"{{{HATENA_NS}}}imageurl")
     if not image_url:
-        raise RuntimeError(f"Unexpected Fotolife response: {xml.decode(errors='replace')}")
+        raise RuntimeError(f"フォトライフの応答に画像 URL がありません: {xml.decode(errors='replace')}")
     return to_original_url(image_url)
 
 
