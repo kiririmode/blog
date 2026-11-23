@@ -57,7 +57,7 @@ npm run lint path/to/file.md   # 特定のファイルをリント
 npm run upload-images kiririmode.hatenablog.jp/entry/_draft/123456.md
 ```
 
-本文の`![alt](./123456-figure.svg)`のようなローカルの画像参照を、フォトライフの元の大きさのURL（`_original`付き）に置き換える。画像は、`<entry_id>-`で始まる名前にして下書き置き場へ置く。
+本文の`![alt](./123456-figure.svg)`のようなローカルの画像参照を、フォトライフが返すURLに置き換える。画像は、`<entry_id>-`で始まる名前にして下書き置き場へ置く。
 
 ### 公開準備と公開フロー
 
