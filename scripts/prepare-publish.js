@@ -70,7 +70,8 @@ async function uploadToFotolife(imagePath, title) {
       throw new Error(`Unexpected Fotolife response shape: ${JSON.stringify(response)}`);
     }
 
-    return imageUrl;
+    // imageurl は横幅450pxに縮小した画像を指す。元の大きさの画像は拡張子の前に _original が付く
+    return imageUrl.replace(/(\.\w+)$/, '_original$1');
   } catch (error) {
     throw new Error(`Failed to upload image to Fotolife: ${error.message}`);
   }
